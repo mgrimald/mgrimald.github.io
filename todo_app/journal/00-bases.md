@@ -14,11 +14,7 @@ Therefore I started to look after some projects I could work on to really grasp 
 A ToDo app seemed interesting : the basis is not too complex but it can be expended in several aspects.
 
 I found this tutorial : https://scotch.io/tutorials/create-a-simple-to-do-app-with-react
-I have to confide that I am no frontDev (yet).
-I can't write CSS, I can't write well structured HTML aaaand I barely know JS.
-Of course I can read it without difficulties, but as my cursus made me work mostly on C and C++, I am not used to the JS way of doing things
-The tutorial really helped me to understand the way to structure components, html and what to put where.
-But at the same time, there were several pieces of codes I really didn't like.
+
 
 Eventually I coded this simple app :
 	- A TodoApp, coordinating all the elements. This component store and handle the data;
