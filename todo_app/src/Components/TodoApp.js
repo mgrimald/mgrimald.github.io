@@ -22,13 +22,15 @@ export class TodoApp extends Component {
 		this.handleEdit = this.handleEdit.bind(this);
 		this.handleOrderUp = this.handleOrderUp.bind(this);
 		this.handleOrderDown = this.handleOrderDown.bind(this);
+		this.toggleEditing = this.toggleEditing.bind(this);
 	}
 	createTodo(id, text, order=0, achieved=false){
 		const todo = {
 			text: text, 
 			id: id,
 			order: order,
-			achieved: achieved
+			achieved: achieved,
+			editing: false
 		};
 		return todo;
 	}
@@ -42,14 +44,18 @@ export class TodoApp extends Component {
 	handleAchieve(id) {
 		let data = this.state.data;
 		const index = data.findIndex((todo) => {return (todo.id === id)});
-		data[index].achieved = true;
-		this.setState({data: data});
+		if (index >= 0) {
+			data[index].achieved = true;
+			this.setState({data: data});
+		}
 	}
 	handleUnachieve(id) {
 		const index = this.state.data.findIndex((todo) => {return (todo.id === id)});
 		const data = this.state.data;
-		data[index].achieved = false;
-		this.setState({data: data});
+		if (index >= 0){
+			data[index].achieved = false;
+			this.setState({data: data});
+		}
 	}
 	handleRemove(id) {
 		const remains = this.state.data.filter(todo => todo.id !== id)
@@ -64,19 +70,14 @@ export class TodoApp extends Component {
 			return this.state.data;
 		}
 		const data = this.state.data;
-		console.log("data[index]: ", data[index]);
-		console.log("data[index_swap]: ", data[index_swap]);
 		let tmp = data[index];
 		data[index] = data[index_swap];
 		data[index_swap] = tmp;
 		data[index].order = order;
 		data[index_swap].order = order_swap;
-		console.log("data[index]: ", data[index]);
-		console.log("data[index_swap]: ", data[index_swap]);
 		return data;
 	}
 	handleOrderUp(order){
-		console.log("order up", order);
 		const data = this.swapPosition(order, order -1)
 		this.setState({data: data});
 	}
@@ -84,6 +85,14 @@ export class TodoApp extends Component {
 		console.log("order down", order);
 		const data = this.swapPosition(order, order +1)
 		this.setState({data: data});
+	}
+	toggleEditing(id){
+		let data = this.state.data;
+		const index = data.findIndex((todo) => {return (todo.id === id)});
+		if (index >= 0) {
+			data[index].editing = !data[index].editing;
+			this.setState({data: data});
+		}
 	}
 	handleEdit(id, text) {
 		let data = this.state.data;
@@ -105,15 +114,16 @@ export class TodoApp extends Component {
     	return (
       		<div> 
         		<TodoForm 
-        			addTodo={this.addTodo}
-        			editTodo={this.handleEdit} />
+        			addTodo={this.addTodo} />
         		<TodoList 
         			todos={this.state.data}
         			remove={this.handleRemove}
+        			edit={this.handleEdit}
         			achieve={this.handleAchieve}
         			unachieve={this.handleUnachieve}
         			up={this.handleOrderUp}
         			down={this.handleOrderDown}
+					toggleEditing={this.toggleEditing}
         		 />
       		</div>
     	);
