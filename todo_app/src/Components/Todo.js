@@ -32,27 +32,31 @@ const TodoItem = (props) => {
   	return (
   	  <div className={style}> 
   	  	<div className="id">
-			{props.todo.order} | {props.todo.id}
-		</div>
-		<div className="text">
-			{props.todo.text}
-		</div>
-		<div className="removeBtn">
-			<button onClick={ () => {props.remove(props.todo.id)} }>remove</button>
-		</div>
-		<div className="achieveBtn">
-	  		{achievement}
-	  	</div>
-		<div className="editSwitchBtn">
-	  		{editing}
-	  	</div>
-		<div className="upBtn">
-			<button onClick={ () => {props.up(props.todo.order)} } disabled={props.upBtnDisabled}> ^ </button>
-	  	</div>
-		<div className="downBtn">
-	  		<button onClick={ () => {props.down(props.todo.order)}} disabled={props.downBtnDisabled}> v </button>
-	  	</div>
-	  </div>
+			    {props.todo.order} | {props.todo.id}
+		    </div>
+		    <div className="text">
+			    {props.todo.text}
+		    </div>
+        <div className="buttons">
+          <div className="button_wrapper">
+            <div className="editSwitchBtn">
+              {editing}
+            </div>
+  		      <div className="achieveBtn">
+    	  		  {achievement}
+  	  	    </div>
+            <div className="removeBtn">
+              <button onClick={ () => {props.remove(props.todo.id)} }>remove</button>
+            </div>
+  		      <div className="upBtn">
+    			    <button onClick={ () => {props.up(props.todo.order)} } disabled={props.upBtnDisabled}> ^ </button>
+  	  	    </div>
+  		      <div className="downBtn">
+    	 		    <button onClick={ () => {props.down(props.todo.order)}} disabled={props.downBtnDisabled}> v </button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
 };
 
@@ -95,7 +99,7 @@ export const TodoList = (props) => {
 		}
 	)
 	return (
-		<div className="todoList">{todoNode}</div>
+		<div className="todoList wrapper">{todoNode}</div>
 	);
 };
 

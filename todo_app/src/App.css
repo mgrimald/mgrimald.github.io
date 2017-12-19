@@ -1,56 +1,89 @@
-.App {
-  text-align: center;
+/* https://developer.mozilla.org/fr/docs/Web/CSS/CSS_Grid_Layout */
+* {
+	box-sizing: border-box;
+	text-align: center;
 }
 
-.App * {
-  box-sizing: border-box;
+.wrapper {
+  max-width: 940px;
+  margin: 0 auto;
 }
-
+.wrapper > div {
+  border: 2px solid rgb(233,171,88);
+  border-radius: 5px;
+  background-color: rgba(233,171,88,.5);
+  padding: 1em;
+  color: #d9480f;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+}
+.todoItem > div {
+  border: 2px solid rgb(233,171,88);
+  border-radius: 5px;
+  background-color: rgba(233,171,88,.5);
+  padding: 1em;
+  color: #d9480f;
+}
 .todoItem {
-  height: 40px;
-  border-style: dotted;
-  border-color:black;
-  margin-top:10px;
-  margin-right: 10px;
-  margin-left:10px;
-  }
-.todoItem.achieved {
-  background-color: red;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
 }
+
 .todoItem .id {
-  width: 10%;
-  background-color: #aebaf2;
-  float: left;
+  grid-column: 1 / 2;
+  grid-row: 1;
 }
-.todoItem .text {
-  background-color: green;
-  float: left;
-  width: 56%;
-  align-content: center;
-  padding: 5px 10px;
-    margin-left: 10px;
-  margin-right: -10px;
+.todoItem .text{
+  grid-column: 2 / 8;
+  grid-row: 1;
 }
-.todoItem.achieved .text {
+.todoItem .buttons {
+  grid-column: 8 / 9;
+  grid-row: 1;
+}
+
+.button_wrapper > div {
+  border: 2px solid rgb(233,171,88);
+  border-radius: 5px;
+  background-color: rgba(233,171,88,.5);
+  padding: 1em;
+  color: #d9480f;
+}
+.button_wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 5px;
+  grid-auto-rows: minmax(10px, auto);
+}
+.removeBtn {
+  grid-column: 1 / 2;
+  grid-row: 1;
+}
+.achieveBtn {
+  
+  grid-column: 1 / 4;
+  grid-row: 2;
+}
+.editSwitchBtn {
+  grid-column: 1 / 2;
+  grid-row: 3;
+}
+.upBtn {
+  grid-column: 3;
+  grid-row: 1;	
+}
+.downBtn {
+  grid-column: 3;
+  grid-row: 3;	
+}
+
+
+.todoItem.achieved .achieveBtn{
   background-color: red;
-}
-.todoItem .removeBtn {
-  width: 8%;
-  float: left;
-}
-.todoItem .achieveBtn {
-  width: 8%;
-  float: left;
-}
-.todoItem .downBtn {
-  width: 5%;
-  float: left;
-}
-.todoItem .upBtn {
-  width: 5%;
-  float: left;
-}
-.todoItem .editSwitchBtn {
-  width: 8%;
-  float: left;
 }
