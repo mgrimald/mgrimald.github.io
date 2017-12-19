@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { TodoForm, TodoList } from './Todo.js';
-
+import { TodoForm } from './TodoForm.js';
+import { TodoList } from './TodoList.js';
 
 export class TodoApp extends Component {
 	constructor(props) {
