@@ -1,6 +1,36 @@
 import React from 'react';
 import {TodoEditForm, TodoItem} from "./TodoItem.js"
 
+export const TodoItemButtons = (props) => {
+  const achievementFct = (props.todo.achieved === false) ? () => { props.achieve(props.todo.id) } : () => { props.unachieve(props.todo.id) } 
+  const achievementTxt = (props.todo.achieved === false) ? "achieve" : "unachieve" 
+  const editingTxt = (props.todo.editing === false) ? "edit" : "annuler";
+
+  return (
+    <div className="button_wrapper">
+      <div className="editSwitchBtn">
+        <button onClick={() => { props.toggleEditing(props.todo.id) } }>
+          {editingTxt}
+        </button>
+      </div>
+      <div className="achieveBtn">
+        <button onClick={achievementFct}>
+          {achievementTxt}
+        </button>
+      </div>
+      <div className="removeBtn">
+        <button onClick={ () => {props.remove(props.todo.id)} }>remove</button>
+      </div>
+      <div className="upBtn">
+        <button onClick={ () => {props.up(props.todo.order)} } disabled={props.upBtnDisabled}> ^ </button>
+      </div>
+      <div className="downBtn">
+          <button onClick={ () => {props.down(props.todo.order)}} disabled={props.downBtnDisabled}> v </button>
+      </div>
+    </div>
+  );
+}
+
 export const TodoList = (props) => {
   const todoNode = props.todos.map(
     (todo) => {

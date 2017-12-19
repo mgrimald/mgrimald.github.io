@@ -1,60 +1,51 @@
 import React from 'react';
 
+export const TodoItemButtons = (props) => {
+  const achievementFct = (props.todo.achieved === false) ? () => { props.achieve(props.todo.id) } : () => { props.unachieve(props.todo.id) } 
+  const achievementTxt = (props.todo.achieved === false) ? "achieve" : "unachieve" 
+  const editingTxt = (props.todo.editing === false) ? "edit" : "annuler";
+
+  return (
+    <div className="button_wrapper">
+      <div className="editSwitchBtn">
+        <button onClick={() => { props.toggleEditing(props.todo.id) } }>
+          {editingTxt}
+        </button>
+      </div>
+      <div className="achieveBtn">
+        <button onClick={achievementFct}>
+          {achievementTxt}
+        </button>
+      </div>
+      <div className="removeBtn">
+        <button onClick={ () => {props.remove(props.todo.id)} }>remove</button>
+      </div>
+      <div className="upBtn">
+        <button onClick={ () => {props.up(props.todo.order)} } disabled={props.upBtnDisabled}> ^ </button>
+      </div>
+      <div className="downBtn">
+          <button onClick={ () => {props.down(props.todo.order)}} disabled={props.downBtnDisabled}> v </button>
+      </div>
+    </div>
+  );
+}
+
 export const TodoItem = (props) => {
-	const achievement = (props.todo.achieved === false) ? (
-			<button onClick={
-		  		() => {
-  					props.achieve(props.todo.id)
-  				}
-  			}>achieve</button>
-		) : (
-			<button onClick={
-		  		() => {
-  					props.unachieve(props.todo.id)
-  				}
-  			}>unachieve</button>
-		);
-	const editing = (props.todo.editing === false) ? (
-			<button onClick={
-		  		() => {
-  					props.toggleEditing(props.todo.id)
-  				}
-  			}>edit</button>
-		) : (
-			<button onClick={
-		  		() => {
-  					props.toggleEditing(props.todo.id)
-  				}
-  			}>annuler</button>
-		);
 	const achievedStyle = (props.todo.achieved) ? "achieved" : "";
+  let buttons = props.buttons;
+  if (props.buttons === undefined)
+    buttons = TodoItemButtons;
 	const style = "todoItem " + achievedStyle;
   	return (
   	  <div className={style}> 
-  	  	<div className="id">
-			    {props.todo.order} | {props.todo.id}
-		    </div>
-		    <div className="text">
-			    {props.todo.text}
-		    </div>
+        <div className="id">
+          {props.todo.order} | {props.todo.id}
+        </div>
+        <div className="text">
+          {props.todo.text}
+        </div>
         <div className="buttons">
-          <div className="button_wrapper">
-            <div className="editSwitchBtn">
-              {editing}
-            </div>
-  		      <div className="achieveBtn">
-    	  		  {achievement}
-  	  	    </div>
-            <div className="removeBtn">
-              <button onClick={ () => {props.remove(props.todo.id)} }>remove</button>
-            </div>
-  		      <div className="upBtn">
-    			    <button onClick={ () => {props.up(props.todo.order)} } disabled={props.upBtnDisabled}> ^ </button>
-  	  	    </div>
-  		      <div className="downBtn">
-    	 		    <button onClick={ () => {props.down(props.todo.order)}} disabled={props.downBtnDisabled}> v </button>
-            </div>
-          </div>
+          {buttons(props)}
         </div>
       </div>
     );
@@ -105,17 +96,17 @@ export class TodoEditForm extends React.Component {
     return (
     <div>
       <TodoItem 
-			todo={todo}
-			key={"EditingTodoItem_".concat(todo.id)}
-			upBtnDisabled={this.props.upBtnDisabled}
-			downBtnDisabled={this.props.downBtnDisabled}
-			remove={this.props.remove}
-			achieve={this.props.achieve}
-			unachieve={this.props.unachieve}
-			down={this.props.down}
-			up={this.props.up}
-			toggleEditing={intercept}
-	   />
+  			todo={todo}
+  			key={"EditingTodoItem_".concat(todo.id)}
+  			upBtnDisabled={this.props.upBtnDisabled}
+  			downBtnDisabled={this.props.downBtnDisabled}
+  			remove={this.props.remove}
+  			achieve={this.props.achieve}
+  			unachieve={this.props.unachieve}
+  			down={this.props.down}
+  			up={this.props.up}
+  			toggleEditing={intercept}
+	    />
       <form onSubmit={this.handleSubmit}>
         <label>
           text:
