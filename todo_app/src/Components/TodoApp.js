@@ -1,7 +1,11 @@
+/* eslint no-cond-assign: 0 */
+
 import React, { Component } from 'react';
+import {  Route, Switch, Redirect } from 'react-router-dom';
+
 import { TodoForm } from './TodoForm.js';
 import { TodoList } from './TodoList.js';
-import { TrashList } from "./TrashList"
+import { TrashList } from "./TrashList";
 
 export class TodoApp extends Component {
 	constructor(props) {
@@ -178,37 +182,57 @@ export class TodoApp extends Component {
 		const data = this.swapPosition(order, order +1, this.state.data);
 		this.setState({data: data});
 	}
+
   	render() {
+		const trashListProps = {
+			trashes: this.state.trashBin,
+			todos: this.state.data,
+			remove: this.handleRemove,
+			edit: this.handleEdit,
+			achieve: this.handleAchieve,
+			unachieve: this.handleUnachieve,
+			up: this.handleOrderUpTrash,
+			down: this.handleOrderDownTrash,
+			restore: this.restore,
+			toggleEditing: this.toggleEditing,
+		}
+		const todoListProps = {
+			todos: this.state.data,
+			remove: this.handleRemove,
+			edit: this.handleEdit,
+			achieve: this.handleAchieve,
+			unachieve: this.handleUnachieve,
+			up: this.handleOrderUp,
+			down: this.handleOrderDown,
+			toggleEditing: this.toggleEditing,
+		}
     	return (
-      		<div> 
-      			<button onClick={this.emptyTrashBin}>
-      				empty all 
-      			</button>
-      			<TrashList
-      				trashes={this.state.trashBin}
-        			todos={this.state.data}
-        			remove={this.handleRemove}
-        			edit={this.handleEdit}
-        			achieve={this.handleAchieve}
-        			unachieve={this.handleUnachieve}
-        			up={this.handleOrderUpTrash}
-        			down={this.handleOrderDownTrash}
-        			restore={this.restore}
-					toggleEditing={this.toggleEditing}
-      			/>
-        		<TodoForm 
-        			addTodo={this.addTodo} />
-        		<TodoList 
-        			todos={this.state.data}
-        			remove={this.handleRemove}
-        			edit={this.handleEdit}
-        			achieve={this.handleAchieve}
-        			unachieve={this.handleUnachieve}
-        			up={this.handleOrderUp}
-        			down={this.handleOrderDown}
-					toggleEditing={this.toggleEditing}
-        		 />
-      		</div>
+		<div>
+    		<Switch>
+    			<Route exact path="/" render={()=> <Redirect to="/todoApp"/>} />
+      			<Route exact path="/todoApp/" render={() => (
+      				  <div> 
+        				<TodoForm addTodo={this.addTodo} />
+      					<TodoList {...todoListProps} />
+      				  </div>
+      				)
+      			} />
+      			<Route exact path="/todoApp/trashBin/" render={() => (
+      				  <div> 
+      				  	{
+      				  	  (trashListProps.trashes.length !== 0) ? (<button onClick={this.emptyTrashBin}> empty all trashes </button>) : (<div>There is no trashes here</div>)
+      					}
+      					<TrashList {...trashListProps} /> 
+      				  </div>
+      				)
+      			} />
+      			<Route render={() => <div>404 ERROR</div> } />
+      		</Switch>
+      	</div>
     	);
   	}
 }
+
+/*
+      		
+*/
