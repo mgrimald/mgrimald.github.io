@@ -3,9 +3,11 @@
 import React, { Component } from 'react';
 import {  Route, Switch, Redirect } from 'react-router-dom';
 
+import { Header } from './Header.js';
 import { TodoForm } from './TodoForm.js';
 import { TodoList } from './TodoList.js';
 import { TrashList } from "./TrashList";
+import './App.css';
 
 export class TodoApp extends Component {
 	constructor(props) {
@@ -208,16 +210,18 @@ export class TodoApp extends Component {
 		}
     	return (
 		<div>
+			<Header />
+			<p>{this.props.match.path}</p>
     		<Switch>
-    			<Route exact path="/" render={()=> <Redirect to="/todoApp"/>} />
-      			<Route exact path="/todoApp/" render={() => (
+    			<Route exact path={this.props.match.url + "/"} render={()=> <Redirect to={this.props.match.url + "/todoApp"}/>} />
+      			<Route exact path={this.props.match.url + "/todoApp"} render={() => (
       				  <div> 
         				<TodoForm addTodo={this.addTodo} />
       					<TodoList {...todoListProps} />
       				  </div>
       				)
       			} />
-      			<Route exact path="/todoApp/trashBin/" render={() => (
+      			<Route exact path={this.props.match.url + "/todoApp/trashBin"} render={() => (
       				  <div> 
       				  	{
       				  	  (trashListProps.trashes.length !== 0) ? (<button onClick={this.emptyTrashBin}> empty all trashes </button>) : (<div>There is no trashes here</div>)
