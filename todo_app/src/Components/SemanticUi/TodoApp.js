@@ -2,12 +2,12 @@
 
 import React, { Component } from 'react';
 import {  Route, Switch, Redirect } from 'react-router-dom';
+import { Button, Container } from 'semantic-ui-react'
 
 import { Header } from './Header.js';
 import { TodoForm } from './TodoForm.js';
 import { TodoList } from './TodoList.js';
 import { TrashList } from "./TrashList";
-import './App.css';
 
 export class TodoApp extends Component {
 	constructor(props) {
@@ -211,23 +211,25 @@ export class TodoApp extends Component {
     	return (
 		<div>
 			<Header />
-			<p>{this.props.match.path}</p>
     		<Switch>
     			<Route exact path={this.props.match.url + "/"} render={()=> <Redirect to={this.props.match.url + "/todoApp"}/>} />
       			<Route exact path={this.props.match.url + "/todoApp"} render={() => (
-      				  <div> 
+      				  <Container textAlign="center"> 
         				<TodoForm addTodo={this.addTodo} />
       					<TodoList {...todoListProps} />
-      				  </div>
+      				  </Container>
       				)
       			} />
       			<Route exact path={this.props.match.url + "/todoApp/trashBin"} render={() => (
-      				  <div> 
+      				  <Container textAlign="center"> 
       				  	{
-      				  	  (trashListProps.trashes.length !== 0) ? (<button onClick={this.emptyTrashBin}> empty all trashes </button>) : (<div>There is no trashes here</div>)
+      				  	  (trashListProps.trashes.length !== 0) ? (
+      				  	  	<Button onClick={this.emptyTrashBin}> empty all trashes </Button>
+      				  	  	) : 
+      				  	  (<div>There is no trashes here</div>)
       					}
       					<TrashList {...trashListProps} /> 
-      				  </div>
+      				  </Container>
       				)
       			} />
       			<Route render={() => <div>404 ERROR</div> } />

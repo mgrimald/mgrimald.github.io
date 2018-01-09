@@ -1,0 +1,13 @@
+
+.testActive {
+  background-color: red;
+}
+
+.todoItem.achieved .achieveBtn{
+  background-color: red;
+}
+
+
+.todoItem.achieved .id{
+  background-color: red;
+}

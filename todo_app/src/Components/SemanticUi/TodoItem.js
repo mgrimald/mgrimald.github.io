@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button, Grid, Segment, Divider, Container, Confirm, Form} from 'semantic-ui-react'
 
 export const TodoItemButtons = (props) => {
   const achievementFct = (props.todo.achieved === false) ? () => { props.achieve(props.todo.id) } : () => { props.unachieve(props.todo.id) } 
@@ -6,26 +7,14 @@ export const TodoItemButtons = (props) => {
   const editingTxt = (props.todo.editing === false) ? "edit" : "annuler";
 
   return (
-    <div className="button_wrapper">
-      <div className="editSwitchBtn">
-        <button onClick={() => { props.toggleEditing(props.todo.id) } }>
-          {editingTxt}
-        </button>
-      </div>
-      <div className="achieveBtn">
-        <button onClick={achievementFct}>
-          {achievementTxt}
-        </button>
-      </div>
-      <div className="removeBtn">
-        <button onClick={ () => {props.remove(props.todo.id)} }>remove</button>
-      </div>
-      <div className="upBtn">
-        <button onClick={ () => {props.up(props.todo.order)} } disabled={props.upBtnDisabled}> ^ </button>
-      </div>
-      <div className="downBtn">
-          <button onClick={ () => {props.down(props.todo.order)}} disabled={props.downBtnDisabled}> v </button>
-      </div>
+    <div>
+      <Button onClick={() => { props.toggleEditing(props.todo.id) } }>
+        {editingTxt}
+      </Button>
+      <Button  onClick={achievementFct}>
+        {achievementTxt}
+      </Button>
+      <Button onClick={ () => {props.remove(props.todo.id)} }>remove</Button>
     </div>
   );
 }
@@ -37,26 +26,43 @@ export const TodoItem = (props) => {
     buttons = TodoItemButtons;
 	const style = "todoItem " + achievedStyle;
   	return (
-  	  <div className={style}> 
-        <div className="id">
-          {props.todo.order} | {props.todo.id}
-        </div>
-        <div className="text">
-          {props.todo.text}
-        </div>
-        <div className="buttons">
+      <div>
+      <Button attached='top' onClick={ () => {props.up(props.todo.order)} } disabled={props.upBtnDisabled}> ^ </Button>
+      <Segment attached>
+      <Grid columns={3} relaxed className={style}>
+        <Grid.Column>
+          <Segment basic className="id">
+            {props.todo.order} | {props.todo.id}
+          </Segment>
+        </Grid.Column>
+        <Grid.Column>
+          <Segment basic  className="text">
+            {props.todo.text}
+          </Segment>
+        </Grid.Column>
+        <Grid.Column>
+          <Segment basic  className="buttons">
           {buttons(props)}
-        </div>
+          </Segment>
+        </Grid.Column>
+      </Grid>
+
+      </Segment>
+      <Button attached='bottom' onClick={ () => {props.down(props.todo.order)}} disabled={props.downBtnDisabled}> v </Button>
+
       </div>
     );
 };
+
+
 
 export class TodoEditForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
     	text: props.todo.text,
-    	id: props.todo.id
+    	id: props.todo.id,
+      open: false
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -86,9 +92,7 @@ export class TodoEditForm extends React.Component {
   	todo.text = this.state.text;
   	const intercept = (id) => {
 		if (this.props.todo.text !== this.state.text) {
-  			//eslint-disable-next-line
-  			if (confirm("are U sure ?"))
-  				this.props.toggleEditing(id);
+        this.setState({ open: true })
   		}
   		else
   			this.props.toggleEditing(id);
@@ -107,13 +111,23 @@ export class TodoEditForm extends React.Component {
   			up={this.props.up}
   			toggleEditing={intercept}
 	    />
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          text:
+      
+      <Form onSubmit={this.handleSubmit}>
+        <Form.Field>
+          <label>
+            text:
+          </label>
           <input type="text" value={this.state.text} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Save" />
-      </form>
+        <Button type='submit'>Save</Button>
+        </Form.Field>
+      </Form>
+      <Confirm
+          open={this.state.open}
+          cancelButton='Never mind'
+          confirmButton="Let's do it"
+          onCancel={() => {this.setState({ open: false })}}
+          onConfirm={() => {this.props.toggleEditing(this.state.id); this.setState({ open: false })} }
+        />
     </div>
     );
   }

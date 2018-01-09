@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {  BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
-import { TodoApp as TodoAppBasicCss  } from './Components/Basic-css/TodoApp.js';
+import { TodoApp as TodoAppSemanticUi  } from './Components/SemanticUi/TodoApp.js';
 
 class App extends Component {
   render() {
@@ -9,9 +9,9 @@ class App extends Component {
   		<BrowserRouter>
   		  <div>
         <Switch>
-          <Route exact path="/" render={()=> <Redirect to="/basic"/>} />
-          <Route path="/basic" render={({match}) => (
-                <TodoAppBasicCss match={match}/>
+          <Route exact path="/" render={()=> <Redirect to="/semantic"/>} />
+          <Route path="/semantic" render={({match}) => (
+                <TodoAppSemanticUi match={match}/>
               )
             } />
           <Route render={() => <div>404 ERROR</div> } />
