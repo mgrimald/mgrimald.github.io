@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, Segment, Divider, Container, Confirm, Form} from 'semantic-ui-react'
+import { Button, Grid, Segment, Confirm, Form} from 'semantic-ui-react'
 
 export const TodoItemButtons = (props) => {
   const achievementFct = (props.todo.achieved === false) ? () => { props.achieve(props.todo.id) } : () => { props.unachieve(props.todo.id) } 
