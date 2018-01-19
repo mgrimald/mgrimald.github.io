@@ -322,6 +322,8 @@ class ClockV5 extends ClockV4 {
 	}
 }
 
+/* V5.1 : Semantic Ui */
+
 const ClockDisplaySemanticUi = (props) => {
 	const {hours, minutes, seconds, ampm} = props;
 
@@ -343,7 +345,7 @@ const ClockDisplaySemanticUi = (props) => {
 	);
 }
 
-class ClockV6 extends ClockV4 {
+class ClockV5V1 extends ClockV4 {
 	render() {
  		return (
  			<ClockDisplaySemanticUi
@@ -356,9 +358,164 @@ class ClockV6 extends ClockV4 {
 	}
 }
 
+
+/* V6 : interactivity */
+/* 
+	https://reactjs.org/docs/events.html and https://reactjs.org/docs/handling-events.html
+	on[Event] in camelCase 
+*/
+
+const ClockDisplayInteractive = (props) => {
+	return (
+		<div>
+			<ClockDisplay {...props} />
+			<button onClick={(event) => {
+					console.log("you clicked"/*event*/);
+					alert("you clicked"/*event*/)
+				}}>
+				test click
+			</button>
+ 		</div>
+ 	);
+}
+
+class ClockV6 extends ClockV4 {
+	render() {
+ 		return (
+ 			<ClockDisplayInteractive
+	 			hours={this.state.time.hours} 
+		 		minutes={this.state.time.minutes} 
+		 		seconds={this.state.time.seconds} 
+		 		ampm={this.state.time.ampm} 
+	 		/>
+	 	);
+	}
+}
+
+/* 
+	best practice is to have a function handle[EventName] for each on[EventName]
+
+	bind is used because "this" in js doesn't work like in java or c++. This in js depend on context and not on object creation.
+	So if we were to use this 
+*/
+
+class ClockDisplayInteractiveV1  extends React.Component {
+	handleClick(event) {
+		console.log("you clicked"/*event*/);
+		alert("you clicked"/*event*/)
+	}
+	render() {
+		return (
+			<div>
+				<ClockDisplay {...this.props} />
+				<button onClick={this.handleClick.bind(this)}>
+					test click
+				</button>
+			</div>
+		);
+	}
+}
+
+class ClockV6V1 extends ClockV4 {
+	render() {
+ 		return (
+ 			<ClockDisplayInteractiveV1
+	 			hours={this.state.time.hours} 
+		 		minutes={this.state.time.minutes} 
+		 		seconds={this.state.time.seconds} 
+		 		ampm={this.state.time.ampm} 
+	 		/>
+	 	);
+	}
+}
+
+/* passing function from parent to child component */
+
+class ClockDisplayInteractiveV2  extends React.Component {
+	handleClick(event) {
+		this.props.freeze();
+	}
+	render() {
+		return (
+			<div>
+				<ClockDisplay {...this.props} />
+				<button onClick={this.handleClick.bind(this)}>
+					freeze
+				</button>
+			</div>
+		);
+	}
+}
+
+class ClockV6V2 extends ClockV4 {
+	handleFreeze(){
+		clearTimeout(this.timeout);
+	}
+	render() {
+ 		return (
+ 			<ClockDisplayInteractiveV2
+	 			hours={this.state.time.hours} 
+		 		minutes={this.state.time.minutes} 
+		 		seconds={this.state.time.seconds} 
+		 		ampm={this.state.time.ampm}
+		 		freeze={this.handleFreeze.bind(this)}
+	 		/>
+	 	);
+	}
+}
+
+
+/* */
+class ClockDisplayInteractiveV3  extends React.Component {
+	handleClick(event) {
+		this.props.switchFreeze(!this.props.freezed);
+	}
+	render() {
+		return (
+			<div>
+				<ClockDisplay {...this.props} />
+				<button onClick={this.handleClick.bind(this)}>
+					{this.props.freezed ? "run" : "freeze" }
+				</button>
+			</div>
+		);
+	}
+}
+
+class ClockV6V3 extends ClockV4 {
+	constructor(props) {
+		super(props);
+		this.state = {
+			...this.state,
+			freezed: false
+		}
+	}
+	handleFreeze(freezing){
+		if (freezing) {
+			clearTimeout(this.timeout);
+		}
+		else {
+			this.setState({"time": this.getTime()}, this.setTimer);
+		}
+		this.setState({freezed: freezing});
+	}
+	render() {
+ 		return (
+ 			<ClockDisplayInteractiveV3
+		 		freezed={this.state.freezed}
+	 			hours={this.state.time.hours} 
+		 		minutes={this.state.time.minutes} 
+		 		seconds={this.state.time.seconds} 
+		 		ampm={this.state.time.ampm}
+		 		switchFreeze={this.handleFreeze.bind(this)}
+	 		/>
+	 	);
+	}
+}
+
 /* misc */
 
-export const Clock = ClockV6;
+export const Clock = ClockV6V3;
 
 const Title = (props) => {
 	return <h2>{props.value}</h2>
@@ -367,6 +524,10 @@ const Title = (props) => {
 export const AllClocks = () => {
 	return (
 		<div>
+			<div>
+				<Title value="Clock v0: " />
+				<ClockV0 />
+			</div>
 			<div>
 				<Title value="Clock v1: " />
 				<ClockV1 />
@@ -388,9 +549,25 @@ export const AllClocks = () => {
 				<ClockV5 />
 			</div>
 			<Container text textAlign="center">
+				<Title value="Clock v5.1: " />
+				<ClockV5V1 />
+			</Container>
+			<div>
 				<Title value="Clock v6: " />
 				<ClockV6 />
-			</Container>
+			</div>
+			<div>
+				<Title value="Clock v6.1 : " />
+				<ClockV6V1 />
+			</div>
+			<div>
+				<Title value="Clock v6.2 : " />
+				<ClockV6V2 />
+			</div>
+			<div>
+				<Title value="Clock v6.3 : " />
+				<ClockV6V3 />
+			</div>
 		</div>
 	);
 }

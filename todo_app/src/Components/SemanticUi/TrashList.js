@@ -6,7 +6,7 @@ export const TrashList = (props) => {
   const trashNodes = props.trashes.map(
     (todo) => {
       return (
-        <List.Item>
+        <List.Item key={"LTrashItem_".concat(todo.id)}>
           <TodoItem
             todo={todo}
             key={"TrashItem_".concat(todo.id)}

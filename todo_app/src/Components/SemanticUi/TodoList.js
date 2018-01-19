@@ -37,7 +37,7 @@ export const TodoList = (props) => {
     (todo) => {
       if (todo.editing === true) {
         return (
-          <List.Item>
+          <List.Item key={"LTodoItem_".concat(todo.id)}>
             <TodoEditForm
               todo={todo}
               key={"TodoEditForm_".concat(todo.id)}
@@ -55,7 +55,7 @@ export const TodoList = (props) => {
         );
       } else {
         return (
-          <List.Item>
+          <List.Item key={"LTodoItem_".concat(todo.id)}>
             <TodoItem
               todo={todo}
               key={"TodoItem_".concat(todo.id)}

@@ -16,7 +16,7 @@ export class CalculatorApp extends Component {
   	render() {
 		return (
 			<Switch>
-				<Route exact path={this.props.match.url + "/"} render={()=> <Redirect to={this.props.match.url + "/Calculator"}/>} />
+				<Redirect exact path={this.props.match.url + "/"} to={this.props.match.url + "/Calculator"}/>
 				<Route exact path={this.props.match.url + "/Calculator"} component={Board} />
 				<Route render={() => <div>404 ERROR</div> } />
 			</Switch>

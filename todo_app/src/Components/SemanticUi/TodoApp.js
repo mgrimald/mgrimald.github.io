@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import {  Route, Switch, Redirect } from 'react-router-dom';
 import { Button, Container } from 'semantic-ui-react'
 
-import { Header } from './Header.js';
+import { HeaderLinks } from "../../HeaderLinks.js";
 import { TodoForm } from './TodoForm.js';
 import { TodoList } from './TodoList.js';
 import { TrashList } from "./TrashList";
@@ -208,11 +208,25 @@ export class TodoApp extends Component {
 			down: this.handleOrderDown,
 			toggleEditing: this.toggleEditing,
 		}
+		const links = [
+			{
+				to: "todoApp", 
+				name: "todoApps"
+			},
+			{
+				to: "todoApp/trashBin",
+				name: "trashBin"
+			},
+			{
+				to: "FAIL",
+				name: "test error 404"
+			}
+		];
     	return (
 		<div>
-			<Header />
+			<HeaderLinks baseUrl={this.props.match.url} links={links}/>
     		<Switch>
-    			<Route exact path={this.props.match.url + "/"} render={()=> <Redirect to={this.props.match.url + "/todoApp"}/>} />
+    			<Redirect exact from={this.props.match.url + "/"} to={this.props.match.url + "/todoApp"}/>} />
       			<Route exact path={this.props.match.url + "/todoApp"} render={() => (
       				  <Container textAlign="center"> 
         				<TodoForm addTodo={this.addTodo} />
@@ -238,7 +252,3 @@ export class TodoApp extends Component {
     	);
   	}
 }
-
-/*
-      		
-*/
