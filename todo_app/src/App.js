@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {  BrowserRouter, Switch, Route } from 'react-router-dom';
 import { TodoApp as TodoAppSemanticUi  } from './Components/SemanticUi/TodoApp.js';
-import { CalculatorApp } from './Components/Calculator/CalculatorApp.js';
+import { GamesApp } from './Components/Calculator/GamesApp.js';
 import { TestApp } from './Components/miniTests/testApp.js';
 import { Homepage } from "./Homepage.js";
 
@@ -35,7 +35,7 @@ class App extends Component {
                   )
                 } />
               <Route path="/Games" render={({match}) => (
-                    <CalculatorApp match={match}/>
+                    <GamesApp match={match}/>
                   )
                 } />
               <Route path="/tests" render={({match}) => (

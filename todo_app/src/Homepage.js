@@ -38,7 +38,7 @@ export const Homepage = (props) => {
 						With theses I learned a lot on the server-side: database, server management/operating, backend, protocols.<br/>
 						With all this knowledge, I could do a lot of things, but I couldn't show much.<br/>
 						I was able to show raw html, I was able to show data inside html.<br/>
-						But I did't want to have to be limited to that.<br/><br/>
+						But I didn't want to have to be limited to that.<br/><br/>
 						Too many time I saw projects I could have worked on, I could have helped build.<br/>
 						I wanted challenge and I wanted to be able to make presentable front-end product, so I could also utilize and promote my backend's.<br/><br/>
 						I started working with React, and here we are.
