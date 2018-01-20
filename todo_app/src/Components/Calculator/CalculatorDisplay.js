@@ -1,7 +1,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types'
-import { Container, Segment, Grid } from 'semantic-ui-react'
+import { Container, Segment, Grid, Divider } from 'semantic-ui-react'
 
 export const ExternalFrame = (props) => {
 	return (
@@ -24,18 +24,47 @@ export const Result = (props) => {
 			</Grid.Column>
 		)
 	})
+	if (!(!props.error && props.action && props.value)) {
+		return (
+			<Segment tertiary textAlign={"center"}>
+				<Grid container columns={res.length}>
+					<Grid.Row>
+						{res}
+					</Grid.Row>
+				</Grid>
+			</Segment>
+		);
+	}
+	const val = props.value.map((val, ite) => {
+		return (
+			<Grid.Column key={"GamesCalculatorResult_"+ite} style={GridColumnStyle}>
+				<Segment inverted color={props.error ? "black" : "yellow"}>
+					<h2><strong>{val}</strong></h2>
+				</Segment>
+			</Grid.Column>
+		)
+	})
 	return (
 		<Segment tertiary textAlign={"center"}>
 			<Grid container columns={res.length}>
 				<Grid.Row>
 					{res}
 				</Grid.Row>
+				<Divider horizontal fitted>
+					<h2>{props.action}</h2>
+				</Divider>
+				<Grid.Row>
+					{val}
+				</Grid.Row>
 			</Grid>
 		</Segment>
 	);
 }
 Result.propTypes = {
-	result: PropTypes.array.isRequired
+	result: PropTypes.array.isRequired,
+	value: PropTypes.array,
+
+
 }
 
 export const ResultError = (props) => {

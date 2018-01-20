@@ -26,7 +26,9 @@ function c(text, length) {
 		return <div className="calculatorPadCell calculatorPadCell4"/*style={divStyle4}*/>{text}</div>;
 	}
 }
-
+/*function handleClick(e){
+	alert(this);
+}*/
 export const PadCell = (props) => {
 	const btnStyle = {padding: "50%", position: "relative"/*, width: "15vw"*/}
 
@@ -34,16 +36,26 @@ export const PadCell = (props) => {
 	const div = c(text, text.length);
 	return (
 		<Grid.Column >
-			<Button fluid circular={props.circular} style={btnStyle}>
+			<Button
+				fluid
+				circular={props.circular}
+				style={btnStyle}
+				onClick={props.handleClick}
+				color={props.color}
+			>
 				{div}
-				{/*<div style={divStyle}>{props.value}</div>*/}
-			</Button>
+				</Button>
 		</Grid.Column>
 	);
 }
 
 export const PadSignCell = (props) => {
-	return (<PadCell  {...props} />);
+	if (props.isActive) {
+		return (<PadCell  {...props} color={"red"} />);
+	}
+	else {
+		return (<PadCell  {...props} />);
+	}
 }
 export const PadSignAddCell = (props) => {
 	return (<PadSignCell  {...props} value="+" />);
@@ -61,7 +73,7 @@ export const PadSignEqualCell = (props) => {
 	return (<PadSignCell  {...props} value="=" />);
 }
 export const PadSignModuloCell = (props) => {
-	return (<PadSignCell  {...props} value="%" />);
+	return (<PadSignCell  {...props} value="Cl" />);
 }
 export const PadNumberCell = (props) => {
 	return (<PadCell circular={true} {...props} />);
