@@ -4,6 +4,8 @@ import {  Route, Switch, Redirect } from 'react-router-dom';
 
 import { AllClocks, Clock } from './Clock.js';
 import { HeaderLinks } from "../../HeaderLinks.js";
+import { RenderProps } from './renderProps/RenderPropsV4.js';
+import { testClassWrapper } from './ApiCall/ApiCallerV4.js';
 
 export class TestApp extends Component {
 	constructor(props) {
@@ -24,8 +26,12 @@ export class TestApp extends Component {
 				name: "all these clocks"
 			},
 			{
-				to: "allTestes",
-				name: "all tests"
+				to: "renderProps",
+				name: "render props pattern"
+			},
+			{
+				to: "ApiCaller",
+				name: "call to api"
 			}
 		];
 		return (
@@ -35,7 +41,8 @@ export class TestApp extends Component {
 					<Redirect exact path={this.props.match.url} to={this.props.match.url + "/" + links[0].to}/>
 					<Route exact path={this.props.match.url + "/" + links[0].to} component={Clock} />
 					<Route exact path={this.props.match.url + "/" + links[1].to} component={AllClocks} />
-					<Route exact path={this.props.match.url + "/" + links[2].to} component={AllClocks} />
+					<Route exact path={this.props.match.url + "/" + links[2].to} component={RenderProps} />
+					<Route exact path={this.props.match.url + "/" + links[3].to} component={testClassWrapper} />
 					<Route render={() => <div>404 ERROR</div> } />
 				</Switch>
 			</div>
