@@ -5,7 +5,7 @@ import {  Route, Switch, Redirect } from 'react-router-dom';
 import { AllClocks, Clock } from './Clock.js';
 import { HeaderLinks } from "../../HeaderLinks.js";
 import { RenderProps } from './renderProps/RenderPropsV4.js';
-import { testClassWrapper } from './ApiCall/ApiCallerV4.js';
+import { testClassWrapper } from './ApiCall/ApiCallerV5Semantic.js';
 
 export class TestApp extends Component {
 	constructor(props) {

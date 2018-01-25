@@ -1,0 +1,1 @@
+rm -rf /D/tmpBuild/ && cp -r build/ /D/tmpBuild/ && cd .. && git checkout master && cp -r /D/tmpBuild/* . && git status && git add . && git commit -m "push from react branch" && git push origin master && git checkout react
