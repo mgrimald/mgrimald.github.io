@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import { List as ListSUI, Segment, Container, Label, Step, Table } from 'semantic-ui-react'
+import { Button, List as ListSUI, Segment, Container, Label, Step, Table, Form } from 'semantic-ui-react'
 
 
 const finishWithSlash = (base) => {
@@ -17,6 +17,7 @@ const dontStartWithSlash = (str) => {
 export class ApiCaller extends React.Component {
 	constructor(props) {
 		super(props);
+		// console.log("constructor");
 		this.state = {
 			error: null,
 			isLoaded: false,
@@ -28,6 +29,12 @@ export class ApiCaller extends React.Component {
 		urls.forEach((url) => {
 			apiCall += dontStartWithSlash(finishWithSlash(url));
 		});
+		if (this.state.isLoaded){
+			this.setState({
+				error: null,
+				isLoaded: false
+			});
+		}
 		/*  V   To refactor V                */
 		if (params && params.length > 0) {
 			let i = 0;
@@ -67,16 +74,84 @@ export class ApiCaller extends React.Component {
 			}
 		)
 	}
+	equalStringArray(first, second) {
+		if (first !== second){
+			if (first && !second) {
+				if (first.length === 0)
+					return true;
+				return false;
+			}
+			if (!first && second) {
+				if (second === 0)
+					return true;
+				return false;
+			}
+			if (first.length !== second.length)
+				return false
+			for (let i = 0; i < first.length; i++){
+				if (first[i] !== second[i])
+					return false
+			}
+		}
+		return true;
+	}
+	equalProps(currentProps, nextProps){
+		if (currentProps.urlRoot !== nextProps.urlRoot)
+			return false
+
+		if equalStringArray(currentProps.urls, nextProps.urls) && equalStringArray(currentProps.params, nextProps.params){
+			return (true)
+		}
+	}
+	shouldComponentUpdate(nextProps, nextState) {
+		console.log("shouldComponentUpdate")
+
+		if (this.props.urlRoot 	!== nextProps.urlRoot /*||
+			this.props.urls 	!== nextProps.urls ||
+			this.props.params 	!== nextProps.params*/){
+			this.fetchData(nextProps.urlRoot, nextProps.urls, nextProps.params);
+			return true
+		}
+		if (nextState.isLoaded !== this.state.isLoaded)
+			return true;
+		/*if ((nextProps.symbol || this.props.symbol) && this.props.symbol === nextProps.symbol){
+			return false;
+		}*/
+		return (true);
+	}
+	componentWillUpdate(nextProps, nextState) {
+		//	console.log("nextProps", nextProps)
+		//	console.log("this.props", this.props)
+		//	console.log("componentWillUpdate")
+	}
+	componentDidUpdate(prevProps, prevState) {
+		// console.log("componentDidUpdate")
+		// if (!prevState.isLoaded && this.state.isLoaded /*&& ( prevProps.symbol !== this.props.symbol || (!this.props.symbol))*/){
+			//console.log("prevProps", prevProps)
+			//console.log("this.props", this.props)
+			//console.log("V");
+		// }
+//		if ((prevProps.symbol || this.props.symbol) && prevProps.symbol === this.props.symbol){
+//			console.log("r");
+
+		//	this.fetchData(prevProps.urlRoot, prevProps.urls, prevProps.params);
+//		}
+
+	}
 
 	componentWillUnmount() {
+		// console.log("componentWillUnmount")
 		/* TODO : handle situation where a call has been made */		
 	}
 	componentDidMount() {
+		// console.log("didMount")
 		const { urlRoot, urls, params } = this.props
 
 		this.fetchData(urlRoot, urls, params);
 	}
+
 	render() {
+		// console.log("render");
 		const { error, isLoaded, result } = this.state;
 
 		if (error) {
@@ -91,10 +166,11 @@ export class ApiCaller extends React.Component {
 			return <div>...loading</div>
 		} else {
 			if (this.props.success){
+				console.log("api caller")
 				return (this.props.success(result));
 			}
 			return (
-				<DefaultApiCallerEntrypoint result={result} maxDepth={8} currentDepth={0} urlRoot={this.props.urlRoot} urls={this.props.urls}/>
+				<DefaultApiCallerEntrypoint result={result} maxDepth={6} currentDepth={0} urlRoot={this.props.urlRoot} urls={this.props.urls}/>
 			);
 		}
 	}
@@ -119,18 +195,6 @@ ApiCaller.propTypes = {
 	success:	PropTypes.func,
 	error:		PropTypes.func,
 	loader:		PropTypes.func
-}
-
-
-export const testClassWrapper = (props) => {
-	const urlRoot = "https://swapi.co/api/";
-	const urls = ["films"];
-	return (
-		<ApiCaller 
-			urlRoot={urlRoot} 
-			urls={urls}
-		/>
-	);
 }
 
 export class DefaultApiCallerRecursive extends React.Component {
@@ -197,13 +261,11 @@ const DefaultApiCallerDispatcher = (props) => {
 		);
 	}
 	else {
-		return (<DefaultApiCallerText text={props.result} urlRoot={props.urlRoot}></DefaultApiCallerText>);
+		return (<DefaultApiCallerText text={props.result.toString()} urlRoot={props.urlRoot}></DefaultApiCallerText>);
 	}
 }
 
-const DefaultApiCallerEntrypoint = (props) => {
-/*
-				let href=urlRoot;
+/*				let href=urlRoot;
 				for (let i = 0; i < urls.length; i++) {
 					href += '/' + urls[i]
 					return (
@@ -213,9 +275,9 @@ const DefaultApiCallerEntrypoint = (props) => {
 								</Step.Content>
 							</Step>
 						);
-				}
+				}*/
+const DefaultApiCallerEntrypoint = (props) => {
 
-*/
 	return (
 		<Container fluid  >
 		<Step.Group>
@@ -226,9 +288,9 @@ const DefaultApiCallerEntrypoint = (props) => {
 			</Step>
 			{
 				props.urls.map(
-					(url) => {
+					(url, i) => {
 						return (
-							<Step key={url}>
+							<Step key={i}>
 								<Step.Content href={props.urlRoot} >
 									<Step.Title>{url}</Step.Title>
 								</Step.Content>
@@ -334,4 +396,86 @@ const DefaultApiCallerListObject = (props) => {
 			}
 		</List>
 	);
+}
+
+export class testClassWrapper extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			urlRoot: "https://swapi.co/api/",
+			urls: ["films"],
+			params: [],
+			symbol: Symbol()
+		}
+	}
+	render () {
+		let formUrls = [];
+		for (let i = 0; this.state.urls.length > i; i++){
+			formUrls.push({
+				key: i,
+				url: this.state.urls[i],
+				fctOnChange: (event) => {
+					let tmp = this.state.urls;
+					//console.log(event.target.value);
+					tmp[i] = event.target.value;
+					this.setState({urls: tmp});
+				}
+			}) 
+		}
+		return (
+			<div>
+				<Segment>
+					<Form onSubmit={(event) => {
+						this.setState({symbol: Symbol(this.urlRoot)})
+					}}
+					>
+						<Form.Field>
+							<label>Url root of the API</label>
+							<input 
+								value={this.state.urlRoot}
+								placeholder='https://swapi.co/api/'
+								onChange={
+									(event) => {
+										this.setState({urlRoot:event.target.value});
+									}
+								}
+							/>
+						</Form.Field>
+						{formUrls.map((elem) => {
+							return (
+								<Form.Field key={elem.key}>
+									<label>url path</label>
+									<input
+										value={elem.url}
+										placeholder=''
+										onChange={elem.fctOnChange}
+									/>
+								</Form.Field>
+							)
+						})}
+						<Form.Field key={-1}>
+							<label>add to url:</label>
+							<input
+								placeholder='new url extension'
+								onChange={
+									(event) => {
+										let tmp = this.state.urls;
+										tmp.push(event.target.value);
+										event.target.value = ""
+										this.setState({urls:tmp});
+									}
+								}
+							/>
+						</Form.Field>
+						<Button type='submit'>Submit</Button>
+					</Form>
+				</Segment>
+			<ApiCaller 
+				urlRoot={this.state.urlRoot} 
+				urls={this.state.urls}
+				//symbol={this.state.symbol}
+			/>
+			</div>
+		);
+	}
 }

@@ -47,10 +47,12 @@ class ClockV1 extends React.Component {
 				}
 				{ ":" }
 				{
-					minutes > 9 ? minutes : `0${minutes}` }
+					minutes > 9 ? minutes : `0${minutes}` 
+				}
 				{ ":" }
 				{
-				seconds > 9 ? seconds : `0${seconds}` }
+					seconds > 9 ? seconds : `0${seconds}` 
+				}
 			{ampm}
 			</div>
 		)

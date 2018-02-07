@@ -6,6 +6,7 @@ import { AllClocks, Clock } from './Clock.js';
 import { HeaderLinks } from "../../HeaderLinks.js";
 import { RenderProps } from './renderProps/RenderPropsV4.js';
 import { testClassWrapper } from './ApiCall/ApiCallerV5Semantic.js';
+import { HackerNewsApp  } from './ApiCall/HackerNews.js';
 
 export class TestApp extends Component {
 	constructor(props) {
@@ -32,6 +33,10 @@ export class TestApp extends Component {
 			{
 				to: "ApiCaller",
 				name: "call to api"
+			},
+			{
+				to: "hackerNews",
+				name: "hackerNews"
 			}
 		];
 		return (
@@ -43,6 +48,7 @@ export class TestApp extends Component {
 					<Route exact path={this.props.match.url + "/" + links[1].to} component={AllClocks} />
 					<Route exact path={this.props.match.url + "/" + links[2].to} component={RenderProps} />
 					<Route exact path={this.props.match.url + "/" + links[3].to} component={testClassWrapper} />
+					<Route exact path={this.props.match.url + "/" + links[4].to} component={HackerNewsApp} />
 					<Route render={() => <div>404 ERROR</div> } />
 				</Switch>
 			</div>
