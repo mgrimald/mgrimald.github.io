@@ -14,7 +14,7 @@
     <script src="driver.js"></script>
     <style>
 
-      .invisible {
+      .invisibles {
         display: none;
       }
 
@@ -36,9 +36,8 @@
   </head>
 
   <body>
-
     <h1>APP conducteur</h1>
-    <a href="driver_alternate.html">alternate view</a>
+    <a href="driver.html">alternate view</a>
     <br/>
     <a href="../addNewElement.html">add element to the database</a>
     <br/>
@@ -47,8 +46,8 @@
         <button id="loggin" onclick="toggleSignIn();">page loading</button>
       </div>
       <br>
-      <button id="availableButton"  class="invisible" onclick="switchView();">voir les courses réservées</button>
-      <button id="takenButton" class="invisible" onclick="switchView();">voir les courses disponibles</button>
+      <button hidden id="availableButton"  class="invisible" onclick="switchView();">voir les courses réservées</button>
+      <button hidden id="takenButton" class="invisible" onclick="switchView();">voir les courses disponibles</button>
       <br>
       <div id="availableContent"  class="invisible">
         <h2>Détails</h2>
