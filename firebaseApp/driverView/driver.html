@@ -1,0 +1,129 @@
+<html>
+  <head>
+    <!-- Load the Firebase library before loading the body. -->
+    <script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
+
+    <!-- Load the jQuery library. Jquery permet de m. -->
+    <script 
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    >
+    </script>
+    <!--script src="https://apis.google.com/js/api.js"></script-->
+    <script src="driver.js"></script>
+    <style>
+
+      .invisibles {
+        display: none;
+      }
+
+      .elementSelected {
+        color: brown;
+      }
+
+      table {
+        border-width:1px; 
+        border-style:solid; 
+        border-color:black;
+       }
+      td { 
+        border-width:1px;
+        border-style:solid; 
+        border-color:black;
+       }
+    </style>
+  </head>
+
+  <body>
+
+    <h1>APP conducteur</h1>
+    <div id="app">
+      <div id="auth">
+        <button id="loggin" onclick="toggleSignIn();">page loading</button>
+      </div>
+      <br>
+      <button hidden id="availableButton"  class="invisible" onclick="switchView();">voir les courses réservées</button>
+      <button hidden id="takenButton" class="invisible" onclick="switchView();">voir les courses disponibles</button>
+      <br>
+      <div id="availableContent"  class="invisible">
+        <h2>Détails</h2>
+        <div>
+          <table class="table table-striped" id="detailsAvailableTable">
+            <thead>
+              <tr>
+                <th>Date de la course</th>
+                <th>Client</th>
+                <th>Départ</th>
+                <th>Destination</th>
+                <th>Tarif</th> 
+                <th>durée</th>
+                <th>créé le</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <h2>Courses disponibles</h2>
+        <div>
+          <table class="table table-striped" id="availableTable">
+            <thead>
+              <tr>
+                <th>Date de la course</th>
+                <th>Client</th>
+                <th>Départ</th>
+                <th>Destination</th>
+                <th>Tarif</th> 
+                <th>durée</th>
+                <th>créé le</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="takenContent" class="invisible">
+        <h2>Détails</h2>
+        <div>
+          <table class="table table-striped" id="detailsTakenTable">
+            <thead>
+              <tr>
+                <th>Date de la course</th>
+                <th>Client</th>
+                <th>Départ</th>
+                <th>Destination</th>
+                <th>Tarif</th> 
+                <th>durée</th>
+                <th>Téléphone</th>
+                <th>créé le</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+        <h2>Courses prises</h2>
+        <div>
+          <table class="table table-striped" id="takenTable">
+            <thead>
+              <tr>
+                <th>Date de la course</th>
+                <th>Client</th>
+                <th>Départ</th>
+                <th>Destination</th>
+                <th>Tarif</th> 
+                <th>durée</th>
+                <th>Téléphone</th>
+                <th>créé le</th>
+              </tr>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

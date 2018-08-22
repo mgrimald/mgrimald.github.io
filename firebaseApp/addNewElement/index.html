@@ -1,0 +1,78 @@
+<html>
+  <head>
+    <!-- Load the Firebase library before loading the body. -->
+    <script src="https://www.gstatic.com/firebasejs/5.4.0/firebase.js"></script>
+
+    <script 
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+      integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+      crossorigin="anonymous"
+    >
+    </script>
+    <script src="addNewElement.js"></script>
+  </head>
+
+  <body>
+    <h1>ADD NEW ELEMENT</h1>
+    <p>the only required fields are the price and the phone number</p>
+    <div id="app">
+      <div id="form">
+        <form id="dataForm">
+          <div>
+            <label for="clientPhone">clientPhone: required</label><br/>
+            <input id="clientPhone" placeholder="clientPhone" required>
+          </div>
+          <div>
+            <label for="price">price: required</label><br/>
+            <input type="number" id="price" placeholder="price" required>
+          </div>
+          <div>
+            <label for="clientName">nom du client</label><br/>
+            <input id="clientName" placeholder="nom">
+          </div>
+          <div>
+            <label for="clientEmail">clientEmail</label><br/>
+            <input id="clientEmail" placeholder="clientEmail">
+          </div>
+          <div>
+            <label for="occupants">occupants</label><br/>
+            <input type="number" id="occupants" placeholder="occupants">
+          </div>
+          <div>
+            <label for="optionanimal">optionanimal</label><br/>
+            <input id="optionanimal" placeholder="optionanimal">
+          </div>
+          <div>
+            <label for="start">lieu de départ</label><br/>
+            <input id="start" placeholder="start">
+          </div>
+          <div>
+            <label for="end">lieu d'arrivée</label><br/>
+            <input id="end" placeholder="end">
+          </div>
+          <div>
+            <label for="pick_up_time">heure de prise en charge</label><br/>
+            <input type="datetime-local" id="pick_up_time" placeholder="pick_up_time">
+          </div>
+          <div>
+            <label for="duration_in_seconds">durée du trajet en secondes</label><br/>
+            <input type="number" id="duration_in_seconds" placeholder="duration_in_seconds">
+          </div>
+          <br/>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+  </body>
+</html>
