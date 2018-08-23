@@ -366,13 +366,13 @@ function handleIfUserIsSignedIn() {
 }
 
 function switchViewAvailable() {
-  $('#availableContent').toggleClass("invisible");
-  $('#availableButton').toggleClass("invisible");
+  $('#availableContent').toggleClass("in-visible");
+  $('#availableButton').toggleClass("in-visible");
 }
 
 function switchViewTaken() {
-  $('#takenContent').toggleClass("invisible");
-  $('#takenButton').toggleClass("invisible");
+  $('#takenContent').toggleClass("in-visible");
+  $('#takenButton').toggleClass("in-visible");
 }
 
 function switchView() {
@@ -380,9 +380,79 @@ function switchView() {
   switchViewAvailable();
 }
 
+const requestPermission = function() {
+  console.log('Requesting permission...');
+  firebase.messaging().requestPermission().then(function() {
+    console.log('Notification permission granted.');
+    saveToken();
+  }).catch(function(err) {
+    console.error('Unable to get permission to notify.', err);
+  });
+};
+
+const saveToken = function() {
+  firebase.messaging().getToken().then(function(currentToken) {
+    if (currentToken) {
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/notificationTokens/' + currentToken).set(true);
+    } else {
+      requestPermission();
+    }
+  }).catch(function(err) {
+    console.error('Unable to get messaging token.', err);
+    if (err.code === 'messaging/permission-default') {
+      window.fcmErrorContainer.innerText = 'You have not enabled notifications on this browser. To enable notifications reload the page and allow notifications using the permission dialog.';
+    } else if (err.code === 'messaging/notifications-blocked') {
+      window.fcmErrorContainer.innerHTML = 'You have blocked notifications on this browser. To enable notifications follow these instructions: <a href="https://support.google.com/chrome/answer/114662?visit_id=1-636150657126357237-2267048771&rd=1&co=GENIE.Platform%3DAndroid&oco=1">Android Chrome Instructions</a><a href="https://support.google.com/chrome/answer/6148059">Desktop Chrome Instructions</a>';
+    }
+  });
+};
+
+const eraseToken = function() {
+  firebase.messaging().getToken().then(function(currentToken) {
+    if (currentToken) {
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/notificationTokens/' + currentToken).set(false);
+    } else {
+      requestPermission();
+    }
+  }).catch(function(err) {
+    console.error('Unable to remove messaging token.', err);
+    if (err.code === 'messaging/permission-default') {
+      window.fcmErrorContainer.innerText = 'You have not enabled notifications on this browser. To enable notifications reload the page and allow notifications using the permission dialog.';
+    } else if (err.code === 'messaging/notifications-blocked') {
+      window.fcmErrorContainer.innerHTML = 'You have blocked notifications on this browser. To enable notifications follow these instructions: <a href="https://support.google.com/chrome/answer/114662?visit_id=1-636150657126357237-2267048771&rd=1&co=GENIE.Platform%3DAndroid&oco=1">Android Chrome Instructions</a><a href="https://support.google.com/chrome/answer/6148059">Desktop Chrome Instructions</a>';
+    }
+  });
+}
+
+const eraseAllToken = function() {
+  firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/notificationTokens/').set(false);
+}
+
+
+const onMessage = function(payload) {
+  console.log('Notifications received.', payload);
+
+  // Normally our Function sends a notification payload, we check just in case.
+  if (payload.notification) {
+    // If notifications are supported on this browser we display one.
+    // Note: This is for demo purposes only. For a good user experience it is not recommended to display browser
+    // notifications while the app is in focus. In a production app you probably want to only display some form of
+    // in-app notifications like the snackbar (see below).
+    if (window.Notification instanceof Function) {
+      // This displays a notification if notifications have been granted.
+      new Notification(payload.notification.title, payload.notification);
+    }
+    // Display the notification content in the Snackbar too.
+    window.snackbar.MaterialSnackbar.showSnackbar({message: payload.notification.body});
+  }
+};
+
 //don't forget
 $(window).on('load', function () {
   handleIfUserIsSignedIn().then(_ => {
+    window.fcmErrorContainer = document.getElementById('fcm-error-container');
+    window.snackbar = document.getElementById('demo-snackbar');
+    firebase.messaging().onMessage(onMessage);
     getAllDatasAndCheckForNewOne();
     checkForDataUpdated();
     checkForDataRemoved();
