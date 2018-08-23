@@ -53,10 +53,10 @@ const addData = function () {
     createdByApi: true,
   };
 
-  firebase.database().ref("reservation/searching/").push(newData, x=>{console.log(x); if (!x) alert("transaction sucess");});
+  firebase.database().ref("reservation/searching/").push(newData, x=>{console.log(x); if (!x) alert("sucess")});
   console.log("data sent: ", newData);
   
-   $('#price').val("");//reset to empty
+  // $('#payload').val("");//reset to empty
 
   return false;//to add if you don't want the page to reload
 };
