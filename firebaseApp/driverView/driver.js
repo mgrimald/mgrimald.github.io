@@ -376,6 +376,7 @@ function switchViewTaken() {
 }
 
 function switchView() {
+  console.log("switchView");
   switchViewTaken();
   switchViewAvailable();
 }
